@@ -9,6 +9,7 @@ var greetTxt = document.querySelector('.greet');
 var today = new Date(); //時間
 
 
+
 updateList(dataAry); // 一開始就先渲染 '陣列資料' 到畫面上
 greetAndClear(dataAry); // 一開始就先渲染 '招呼語 or 全部清空按鈕' 到畫面上
 
@@ -20,12 +21,12 @@ weight.addEventListener('blur', function() {
         alert('請輸入體重欄位')
     }
 })
-
 height.addEventListener('blur', function() {
     if (height.value === '') {
         alert('請輸入身高欄位')
     }
 })
+
 
 
 // 新增 data 資料, 並存進 localStorage 中
@@ -34,10 +35,10 @@ function addData() {
     var heightInt = parseInt(height.value);
     var bmi = weightInt / ((heightInt / 100) * (heightInt / 100));
 
-    console.log(bmi); //確認 click 事件是否有成功執行
-    console.log(bmi.toFixed(2)); //確認此數值是否有保留小數點後兩位
+    console.log(bmi); //檢查bmi是否有運算正確, 也能順便確認 click 事件有成功執行
+    console.log(bmi.toFixed(2)); //測試此數值是否有保留小數點後兩位(有四捨五入)
 
-    // 判斷欄位狀況
+    // 判斷欄位的狀況
     if (height.value === '' || weight.value === '') {
         alert('欄位不可為空');
         return;
@@ -84,7 +85,7 @@ function addData() {
     updateList(dataAry);
     greetAndClear(dataAry);
 
-    // 測驗按鈕 -> bmi 狀態結果
+    // 測驗btn 隱藏, 重測(bmi結果) btn 出現
     this.classList.add('d-none');
     reResult.classList.add('d-block');
     reResult.style.color = newItem.color;
@@ -94,14 +95,17 @@ function addData() {
 result.addEventListener('click', addData);
 
 
-// 重新測驗 view
-function reTest() {
-    this.classList.remove('d-block');
-    result.classList.remove('d-none');
+
+// 點擊重新測驗 btn 的事件
+reResult.addEventListener('click', function() {
+    this.classList.remove('d-block'); // 測驗btn 顯示 
+    result.classList.remove('d-none'); // 重測(bmi結果)btn 隱藏
+
+    // 清空 input 的值
     weight.value = '';
     height.value = '';
-}
-reResult.addEventListener('click', reTest);
+});
+
 
 
 // 把屬性資料渲染到介面上
@@ -114,16 +118,20 @@ function updateList(item) {
     list.innerHTML = str;
 }
 
-// 招呼語判斷 & 渲染到介面上
+
+
+// 招呼語&清空按鈕判斷, 他們的出現時機是相反的
 function greetAndClear(ary) {
     if (ary.length == 0) { // 若陣列是空的, 招呼語出現, 全清空按鈕隱藏
         greetTxt.classList.remove('d-none');
         delAll.classList.add('d-none');
-    } else if (ary.length > 0) { // 若陣列有值, 招呼語隱藏, 全清空按鈕出現
+    } else if (ary.length > 0) { // 若陣列有資料, 招呼語隱藏, 全清空按鈕出現
         greetTxt.classList.add('d-none');
         delAll.classList.remove('d-none');
     }
 }
+
+
 
 // 刪除單一資料, 利用 dataset 去實現, 並同步更新至 localStorage
 function delData(e) {
@@ -131,10 +139,9 @@ function delData(e) {
     if (e.target.nodeName !== 'BUTTON') {
         return;
     }
-    console.log('成功選取 button');
+    console.log('有選取到 button 哦');
     var indexNum = e.target.dataset.num;
-    console.log(indexNum);
-    dataAry.splice(indexNum, 1);
+    dataAry.splice(indexNum, 1); //刪除陣列中的單一資料
     localStorage.setItem('bmiData', JSON.stringify(dataAry));
     updateList(dataAry);
     greetAndClear(dataAry);
@@ -142,10 +149,11 @@ function delData(e) {
 list.addEventListener('click', delData);
 
 
+
 // 清空全部的資料, 並同步更新至 localStorage
 function delAllData(e) {
     e.preventDefault();
-    console.log('成功選取 a 連結');
+    console.log('有選取到 a 連結哦');
     dataAry = []; // 強迫變成空陣列, 即清空全部的資料
     localStorage.setItem('bmiData', JSON.stringify(dataAry));
     updateList(dataAry);

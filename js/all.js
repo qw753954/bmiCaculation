@@ -83,11 +83,13 @@ function addData() {
     localStorage.setItem('bmiData', JSON.stringify(dataAry));
     updateList(dataAry);
     greetAndClear(dataAry);
+
+    // 測驗按鈕 -> bmi 狀態結果
     this.classList.add('d-none');
     reResult.classList.add('d-block');
     reResult.style.color = newItem.color;
     reResult.style.borderColor = newItem.color;
-    reResult.innerHTML = newItem.bmi + '<p>BMI</p><span style="background-color:' + newItem.color + '"><img src="img/icons_loop.png"></span>';
+    reResult.innerHTML = '<div>' + newItem.bmi + '</div><p>BMI</p><span style="background-color:' + newItem.color + '"><img src="img/icons_loop.png"></span>';
 }
 result.addEventListener('click', addData);
 

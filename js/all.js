@@ -18,12 +18,12 @@ greetAndClear(dataAry); // 一開始就先渲染 '招呼語 or 全部清空按�
 weight.addEventListener('blur', function() {
     console.log('weight.value 的型別是 ' + typeof(weight.value));
     if (weight.value === '') {
-        alert('請輸入體重欄位')
+        alert('請輸入體重欄位');
     }
 })
 height.addEventListener('blur', function() {
     if (height.value === '') {
-        alert('請輸入身高欄位')
+        alert('請輸入身高欄位');
     }
 })
 
@@ -49,31 +49,31 @@ function addData() {
 
     // 判斷 bmi 指數對應的身體狀態
     if (16 <= bmi && bmi < 18.5) {
-        var condition = '過輕';
-        var color = '#31BAF9';
+        condition = '過輕';
+        color = '#31BAF9';
     } else if (18.5 <= bmi && bmi < 25) {
-        var condition = '理想';
-        var color = '#86D73F';
+        condition = '理想';
+        color = '#86D73F';
     } else if (25 <= bmi && bmi < 30) {
-        var condition = '過重';
-        var color = '#FF982D';
+        condition = '過重';
+        color = '#FF982D';
     } else if (30 <= bmi && bmi < 35) {
-        var condition = '輕度肥胖';
-        var color = '#FF6C03';
+        condition = '輕度肥胖';
+        color = '#FF6C03';
     } else if (35 <= bmi && bmi < 40) {
-        var condition = '中度肥胖';
-        var color = '#FF6C03';
+        condition = '中度肥胖';
+        color = '#FF6C03';
     } else if (bmi >= 40) {
-        var condition = '重度肥胖';
-        var color = '#FF1200';
+        condition = '重度肥胖';
+        color = '#FF1200';
     } else {
-        var condition = '嚴重過輕';
-        var color = 'yellow';
+        condition = '嚴重過輕';
+        color = 'yellow';
     }
 
-    // 新增使用者的屬性, 含 bmi,身高,體重,狀態跟對應的 color
+    // 新增使用者相關的屬性, 含 bmi,身高,體重,狀態跟對應的 color
     var newItem = {
-        bmi: bmi.toFixed(2),
+        bmi: bmi.toFixed(2), // 保留小數點後兩位
         weight: weightInt,
         height: heightInt,
         condition: condition,
@@ -112,7 +112,7 @@ reResult.addEventListener('click', function() {
 function updateList(item) {
     var str = '';
     for (var i = 0; i < item.length; i++) {
-        str += '<li class="listItem mb-2" style="border-color:' + item[i].color + ';"></span><h3>' + item[i].condition + '</h3><div><small>BMI</small><p>' + item[i].bmi + '</p></div><div><small>weight</small><p>' +
+        str += '<li class="listItem mb-2" style="border-color: ' + item[i].color + ';"></span><h3>' + item[i].condition + '</h3><div><small>BMI</small><p>' + item[i].bmi + '</p></div><div><small>weight</small><p>' +
             item[i].weight + '</p></div><div><small>height</small><p>' + item[i].height + '</p></div><div><small>' + today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate() + '</small></div><button class="del" data-num="' + i + '">刪除</button></li>';
     }
     list.innerHTML = str;

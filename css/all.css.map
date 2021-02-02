@@ -5,7 +5,7 @@
         "all.scss",
         "_reset.scss",
         "_mixin.scss",
-        "_main.scss"
+        "_index.scss"
     ],
     "names": [],
     "file": "all.css"

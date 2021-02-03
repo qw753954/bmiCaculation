@@ -160,7 +160,7 @@ table {
 
 body {
   color: var(--black);
-  background-color: #eee;
+  background-color: var(--grey);
   font-family: 'Roboto', 'Noto Sans TC';
   min-height: 100vh;
   position: relative;
@@ -344,7 +344,7 @@ h3 {
 
 .del {
   background-color: var(--black);
-  color: white;
+  color: #fff;
   padding: 10px;
   border-radius: 10px;
   margin-left: 10px;
@@ -355,14 +355,9 @@ h3 {
 }
 
 .delAll {
-  text-decoration: none;
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
   font-size: 14px;
   color: var(--black);
-  padding: 5px 2px;
-  text-shadow: 1px 1px white, 2px 2px #ddd;
+  text-shadow: 1px 1px #fff, 2px 2px #ddd;
   letter-spacing: 1.5px;
 }
 
@@ -404,8 +399,8 @@ h3 {
   border: 3px solid var(--black);
   background-color: var(--yellow);
   position: absolute;
-  bottom: 0;
   right: 0;
+  bottom: 0;
   -webkit-transition: .3s;
   transition: .3s;
 }

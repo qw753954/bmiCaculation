@@ -1,12 +1,16 @@
-var dataAry = JSON.parse(localStorage.getItem('bmiData')) || [];
-var weight = document.querySelector('#weight');
-var height = document.querySelector('#height');
-var result = document.querySelector('.resultBtn');
-var reResult = document.querySelector('.reResultBtn');
-var list = document.querySelector('.list');
-var delAll = document.querySelector('.delAll');
-var greetTxt = document.querySelector('.greet');
-var today = new Date(); //時間
+let dataAry = JSON.parse(localStorage.getItem('bmiData')) || [];
+const weight = document.querySelector('#weight');
+const height = document.querySelector('#height');
+const result = document.querySelector('.resultBtn');
+const reResult = document.querySelector('.reResultBtn');
+const list = document.querySelector('.list');
+const delAll = document.querySelector('.delAll');
+const greetTxt = document.querySelector('.greet');
+const heightFeedback = document.querySelector('.feedHeight');
+const weightFeedback = document.querySelector('.feedWeight');
+const rangeWarning = document.querySelector('.rangeWarning');
+const closeWarning = document.querySelector('.close');
+const today = new Date(); //時間
 
 
 
@@ -18,32 +22,51 @@ greetAndClear(dataAry); // 一開始就先渲染 '招呼語 or 全部清空按�
 weight.addEventListener('blur', function() {
     console.log('weight.value 的型別是 ' + typeof(weight.value));
     if (weight.value === '') {
-        alert('請輸入體重欄位');
+        weightFeedback.style.opacity = '1';
+    } else {
+        weightFeedback.style.opacity = '0';
     }
 })
 height.addEventListener('blur', function() {
     if (height.value === '') {
-        alert('請輸入身高欄位');
+        heightFeedback.style.opacity = '1';
+    } else {
+        heightFeedback.style.opacity = '0';
     }
+})
+
+
+
+// 點擊 x 按鈕關閉警告視窗
+closeWarning.addEventListener('click', function(e) {
+    e.preventDefault();
+    rangeWarning.style.display = 'none';
 })
 
 
 
 // 新增 data 資料, 並存進 localStorage 中
 function addData() {
-    var weightInt = parseInt(weight.value);
-    var heightInt = parseInt(height.value);
-    var bmi = weightInt / ((heightInt / 100) * (heightInt / 100));
+    let weightInt = parseInt(weight.value);
+    let heightInt = parseInt(height.value);
+    let bmi = weightInt / ((heightInt / 100) * (heightInt / 100));
 
-    console.log(bmi); //檢查bmi是否有運算正確, 也能順便確認 click 事件有成功執行
+    console.log(bmi); //檢查 bmi 是否有運算正確, 也能順便確認 click 事件有成功執行
     console.log(bmi.toFixed(2)); //測試此數值是否有保留小數點後兩位(有四捨五入)
 
     // 判斷欄位的狀況
-    if (height.value === '' || weight.value === '') {
-        alert('欄位不可為空');
+    if (height.value === '' && weight.value === '') {
+        heightFeedback.style.opacity = '1';
+        weightFeedback.style.opacity = '1';
         return;
-    } else if (weightInt < 0 || weightInt >= 400 || heightInt < 10 || heightInt >= 300) {
-        alert('填寫的數值請在合理範圍內～\n\n 體重範圍是 1 ~ 400\n 身高範圍是 11 ~ 300');
+    } else if (height.value === '') {
+        heightFeedback.style.opacity = '1';
+        return;
+    } else if (weight.value === '') {
+        weightFeedback.style.opacity = '1';
+        return;
+    } else if (heightInt < 11 || heightInt > 300 || weightInt < 1 || weightInt > 400) {
+        rangeWarning.style.display = 'flex';
         return;
     }
 
@@ -72,7 +95,7 @@ function addData() {
     }
 
     // 新增使用者相關的屬性, 含 bmi,身高,體重,狀態跟對應的 color
-    var newItem = {
+    let newItem = {
         bmi: bmi.toFixed(2), // 保留小數點後兩位
         weight: weightInt,
         height: heightInt,
@@ -90,7 +113,7 @@ function addData() {
     reResult.classList.add('d-block');
     reResult.style.color = newItem.color;
     reResult.style.borderColor = newItem.color;
-    reResult.innerHTML = newItem.bmi + '<p>BMI</p><span style="background-color:' + newItem.color + '"><img src="img/icons_loop.png"></span>';
+    reResult.innerHTML = `${newItem.bmi} <p>BMI</p><span style="background-color: ${newItem.color};"><img src="img/icons_loop.png"></span>`;
 }
 result.addEventListener('click', addData);
 
@@ -110,10 +133,28 @@ reResult.addEventListener('click', function() {
 
 // 把屬性資料渲染到介面上
 function updateList(item) {
-    var str = '';
-    for (var i = 0; i < item.length; i++) {
-        str += '<li class="listItem mb-2" style="border-color: ' + item[i].color + ';"></span><h3>' + item[i].condition + '</h3><div><small>BMI</small><p>' + item[i].bmi + '</p></div><div><small>weight</small><p>' +
-            item[i].weight + '</p></div><div><small>height</small><p>' + item[i].height + '</p></div><div><small>' + today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate() + '</small></div><button class="del" data-num="' + i + '">刪除</button></li>';
+    let str = '';
+    for (let i = 0; i < item.length; i++) {
+        str +=
+            `<li class="listItem mb-2" style="border-color: ${item[i].color};">
+            <h3>${item[i].condition}</h3>
+            <div>
+                <small>BMI</small>
+                <p>${item[i].bmi}</p>
+            </div>
+            <div>
+                <small>weight</small>
+                <p>${item[i].weight}</p>
+            </div>
+            <div>
+                <small>height</small>
+                <p>${item[i].height}</p>
+            </div>
+            <div>
+                <small>${today.getFullYear()}/${(today.getMonth() + 1)}/${today.getDate()}</small>
+            </div>
+            <button class="del" data-num="${i}">刪除</button>
+        </li>`;
     }
     list.innerHTML = str;
 }
@@ -140,7 +181,7 @@ function delData(e) {
         return;
     }
     console.log('有選取到 button 哦');
-    var indexNum = e.target.dataset.num;
+    let indexNum = e.target.dataset.num;
     dataAry.splice(indexNum, 1); //刪除陣列中的單一資料
     localStorage.setItem('bmiData', JSON.stringify(dataAry));
     updateList(dataAry);

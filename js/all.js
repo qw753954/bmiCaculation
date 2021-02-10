@@ -1,6 +1,6 @@
 let dataAry = JSON.parse(localStorage.getItem('bmiData')) || [];
-const weight = document.querySelector('#weight');
-const height = document.querySelector('#height');
+let weight = document.querySelector('#weight');
+let height = document.querySelector('#height');
 const result = document.querySelector('.resultBtn');
 const reResult = document.querySelector('.reResultBtn');
 const list = document.querySelector('.list');
@@ -137,7 +137,7 @@ function updateList(item) {
     for (let i = 0; i < item.length; i++) {
         str +=
             `<li class="listItem mb-2" style="border-color: ${item[i].color};">
-            <h3>${item[i].condition}</h3>
+            <h4>${item[i].condition}</h4>
             <div>
                 <small>BMI</small>
                 <p>${item[i].bmi}</p>

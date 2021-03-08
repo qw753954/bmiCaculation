@@ -10,8 +10,6 @@ const heightFeedback = document.querySelector('.feedHeight');
 const weightFeedback = document.querySelector('.feedWeight');
 const rangeWarning = document.querySelector('.rangeWarning');
 const closeWarning = document.querySelector('.close');
-const today = new Date(); //時間
-
 
 
 updateList(dataAry); // 一開始就先渲染 '陣列資料' 到畫面上
@@ -100,7 +98,8 @@ function addData() {
         weight: weightInt,
         height: heightInt,
         condition: condition,
-        color: color
+        color: color,
+        time: new Date().toLocaleDateString()
     }
 
     dataAry.push(newItem); // 加到陣列中
@@ -151,7 +150,7 @@ function updateList(item) {
                 <p>${item[i].height}</p>
             </div>
             <div>
-                <small>${today.getFullYear()}/${(today.getMonth() + 1)}/${today.getDate()}</small>
+                <small>${item[i].time}</small>
             </div>
             <button class="del" data-num="${i}">刪除</button>
         </li>`;
